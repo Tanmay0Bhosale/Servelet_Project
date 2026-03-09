@@ -21,11 +21,11 @@ public class LoginServlet extends HttpServlet {
         String user = request.getParameter("user");
         String pwd = request.getParameter("pwd");
 
-        // UC3 Username validation
+        // UC3 Username Validation
         if(!user.matches("[A-Z][a-zA-Z]{2,}")){
 
             out.println("<h3>Invalid Username</h3>");
-            out.println("<p>Name must start with capital letter and have minimum 3 characters</p>");
+            out.println("<p>Name must start with capital letter and contain minimum 3 characters</p>");
 
             request.getRequestDispatcher("login.html")
                     .include(request,response);
@@ -33,7 +33,27 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        // UC2 Login Check
+        // UC4 Password Validation
+        String passwordPattern = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
+
+        if(!pwd.matches(passwordPattern)){
+
+            out.println("<h3>Invalid Password</h3>");
+            out.println("<p>Password must contain:</p>");
+            out.println("<ul>");
+            out.println("<li>Minimum 8 characters</li>");
+            out.println("<li>At least one uppercase letter</li>");
+            out.println("<li>At least one number</li>");
+            out.println("<li>One special character</li>");
+            out.println("</ul>");
+
+            request.getRequestDispatcher("login.html")
+                    .include(request,response);
+
+            return;
+        }
+
+        // Login Check
         if(user.equals("Tanmay") && pwd.equals("Password1@")){
 
             request.setAttribute("user", user);
